@@ -148,6 +148,7 @@ python plot_ablation.py
 `compare.py` produces (with `--tag NAME`, files are named `comparison_NAME_*`):
 - `figures/comparison_accuracy.png`: training vs testing accuracy of every model
 - `figures/comparison_test_f1.png`: testing F1-score of every model
+- `figures/comparison_train.png`: training accuracy & F1 of every model
 - `figures/comparison_val.png`: validation accuracy & F1 (bonus)
 - `figures/{run}_peak_test_cm.png`: confusion matrix at the epoch with the highest testing accuracy
 - `results/comparison_table.md`: Markdown results table
@@ -214,7 +215,8 @@ Highest testing accuracy reached during training (the spec asks for the confusio
 > The baseline runs were trained before threshold tuning existed and use 0.5. `resnet18_split` reaches 85.58% at threshold 0.5.
 
 Figures:
-- `figures/comparison_v2_accuracy.png`, `figures/comparison_v2_test_f1.png`, `figures/comparison_v2_val.png`: final models
+- `figures/comparison_v2_train.png`, `figures/comparison_v2_val.png`, `figures/{run}_confusion_matrix.png`: final models (training curves, validation curves, final test confusion matrices)
+- `figures/comparison_v2_accuracy.png`, `figures/comparison_v2_test_f1.png`: final models (training vs testing accuracy, testing F1)
 - `figures/comparison_accuracy.png`, `figures/comparison_test_f1.png`, `figures/comparison_val.png`: baseline models
 - `figures/ablation_test_curves.png`, `figures/ablation_final_metrics.png`: ablation
 

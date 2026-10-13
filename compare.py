@@ -4,6 +4,7 @@ Compare multiple trained models (e.g. ResNet-18 vs ResNet-50).
 Reads results/{run}_history.json and results/{run}_summary.json written by train.py and produces:
   figures/comparison_accuracy.png   - train & test accuracy per epoch for every model
   figures/comparison_test_f1.png    - test F1-score per epoch for every model
+  figures/comparison_train.png      - training accuracy & F1 per epoch
   figures/comparison_val.png        - validation accuracy & F1 per epoch (bonus)
   figures/{run}_peak_test_cm.png    - confusion matrix at the epoch with the highest test accuracy
   results/comparison_table.md       - Markdown table to paste into README / report
@@ -30,6 +31,29 @@ def _finish(fig, ax, title, ylabel, save_path):
     ax.set_ylabel(ylabel, fontsize=11)
     ax.grid(True, linestyle=":", alpha=0.6)
     ax.legend(loc="lower right")
+    fig.tight_layout()
+    fig.savefig(save_path, dpi=300)
+    plt.close(fig)
+    print(f"[Plot Saved] {save_path}")
+
+
+def _plot_acc_f1(histories, split, split_title, save_path):
+    """Side-by-side accuracy and F1-score per epoch of one split (train / val) for every model."""
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    for i, (run, h) in enumerate(histories.items()):
+        if not h.get(f"{split}_acc"):
+            continue
+        c = COLORS[i % len(COLORS)]
+        ep = range(1, len(h[f"{split}_acc"]) + 1)
+        axes[0].plot(ep, h[f"{split}_acc"], color=c, linewidth=2, label=f"{run} {split}")
+        axes[1].plot(ep, h[f"{split}_f1"], color=c, linewidth=2, label=f"{run} {split}")
+    for ax, t, y in ((axes[0], f"{split_title} Accuracy", "Accuracy (%)"),
+                     (axes[1], f"{split_title} F1-score", "F1-score")):
+        ax.set_title(t, fontsize=13, fontweight="bold")
+        ax.set_xlabel("Epoch")
+        ax.set_ylabel(y)
+        ax.grid(True, linestyle=":", alpha=0.6)
+        ax.legend(loc="lower right")
     fig.tight_layout()
     fig.savefig(save_path, dpi=300)
     plt.close(fig)
@@ -80,29 +104,14 @@ def main():
             ax.plot(ep, h["test_f1"], color=COLORS[i % len(COLORS)], linewidth=2, label=f"{run} test F1")
     _finish(fig, ax, "Testing F1-score", "F1-score", os.path.join(args.fig_dir, f"{prefix}test_f1.png"))
 
-    # 3. Validation curves (bonus)
-    if any(h.get("val_acc") for h in histories.values()):
-        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-        for i, (run, h) in enumerate(histories.items()):
-            if not h.get("val_acc"):
-                continue
-            c = COLORS[i % len(COLORS)]
-            ep = range(1, len(h["val_acc"]) + 1)
-            axes[0].plot(ep, h["val_acc"], color=c, linewidth=2, label=f"{run} val")
-            axes[1].plot(ep, h["val_f1"], color=c, linewidth=2, label=f"{run} val")
-        for ax, t, y in ((axes[0], "Validation Accuracy", "Accuracy (%)"), (axes[1], "Validation F1-score", "F1-score")):
-            ax.set_title(t, fontsize=13, fontweight="bold")
-            ax.set_xlabel("Epoch")
-            ax.set_ylabel(y)
-            ax.grid(True, linestyle=":", alpha=0.6)
-            ax.legend(loc="lower right")
-        fig.tight_layout()
-        path = os.path.join(args.fig_dir, f"{prefix}val.png")
-        fig.savefig(path, dpi=300)
-        plt.close(fig)
-        print(f"[Plot Saved] {path}")
+    # 3. Training accuracy & F1 curves (spec 3.b.i)
+    _plot_acc_f1(histories, "train", "Training", os.path.join(args.fig_dir, f"{prefix}train.png"))
 
-    # 4. Confusion matrix at the epoch with the highest testing accuracy (spec 3.b.iii)
+    # 4. Validation accuracy & F1 curves (spec 3.b.ii, bonus)
+    if any(h.get("val_acc") for h in histories.values()):
+        _plot_acc_f1(histories, "val", "Validation", os.path.join(args.fig_dir, f"{prefix}val.png"))
+
+    # 5. Confusion matrix at the epoch with the highest testing accuracy
     for run, h in histories.items():
         if h.get("test_cm"):
             idx = max(range(len(h["test_acc"])), key=lambda k: h["test_acc"][k])
