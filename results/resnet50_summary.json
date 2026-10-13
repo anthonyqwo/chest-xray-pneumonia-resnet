@@ -1,0 +1,49 @@
+{
+  "run_name": "resnet50",
+  "model": "resnet50",
+  "args": {
+    "model": "resnet50",
+    "dataset": "chest_xray",
+    "num_epochs": 25,
+    "batch_size": 64,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "val_split": 0.15,
+    "img_size": 224,
+    "rotation_deg": 15,
+    "horizontal_flip": false,
+    "pretrained": true,
+    "freeze_backbone": false,
+    "monitor": "f1",
+    "num_workers": 2,
+    "save_dir": "checkpoints",
+    "fig_dir": "figures",
+    "result_dir": "results",
+    "run_name": null,
+    "seed": 42
+  },
+  "best_epoch": 12,
+  "best_val_score": 99.48630136986301,
+  "final_test": {
+    "accuracy": 84.2948717948718,
+    "recall": 0.9974358974358974,
+    "precision": 0.8004115226337448,
+    "f1": 0.8881278538812786,
+    "tp": 389,
+    "tn": 137,
+    "fp": 97,
+    "fn": 1,
+    "confusion_matrix": [
+      [
+        137,
+        97
+      ],
+      [
+        1,
+        389
+      ]
+    ]
+  },
+  "peak_test_acc_epoch": 11,
+  "peak_test_acc": 92.94871794871796
+}

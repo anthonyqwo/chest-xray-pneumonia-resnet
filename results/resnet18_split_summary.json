@@ -1,0 +1,77 @@
+{
+  "run_name": "resnet18_split",
+  "model": "resnet18",
+  "args": {
+    "model": "resnet18",
+    "dataset": "chest_xray",
+    "num_epochs": 25,
+    "batch_size": 64,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "val_split": 0.15,
+    "img_size": 224,
+    "rotation_deg": 15,
+    "horizontal_flip": false,
+    "pretrained": true,
+    "freeze_backbone": false,
+    "monitor": "f1",
+    "split_mode": "patient",
+    "aug": "basic",
+    "label_smoothing": 0.0,
+    "dropout": 0.2,
+    "patience": 0,
+    "tune_threshold": true,
+    "num_workers": 4,
+    "save_dir": "checkpoints",
+    "fig_dir": "figures",
+    "result_dir": "results",
+    "run_name": "resnet18_split",
+    "seed": 42
+  },
+  "epochs_trained": 25,
+  "best_epoch": 11,
+  "best_val_score": 99.09420289855072,
+  "threshold": 0.4100000000000001,
+  "final_test": {
+    "accuracy": 85.09615384615384,
+    "recall": 0.9974358974358974,
+    "precision": 0.8087318087318087,
+    "f1": 0.8932261768082663,
+    "tp": 389,
+    "tn": 142,
+    "fp": 92,
+    "fn": 1,
+    "confusion_matrix": [
+      [
+        142,
+        92
+      ],
+      [
+        1,
+        389
+      ]
+    ]
+  },
+  "final_test_default_threshold": {
+    "accuracy": 85.57692307692307,
+    "recall": 0.9923076923076923,
+    "precision": 0.8164556962025317,
+    "f1": 0.8958333333333335,
+    "tp": 387,
+    "tn": 147,
+    "fp": 87,
+    "fn": 3,
+    "confusion_matrix": [
+      [
+        147,
+        87
+      ],
+      [
+        3,
+        387
+      ]
+    ]
+  },
+  "peak_test_acc_epoch": 2,
+  "peak_test_acc": 94.23076923076923
+}

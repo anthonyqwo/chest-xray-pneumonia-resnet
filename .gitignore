@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Cpus / GPUs / Checkpoints
+checkpoints/*.pth
+checkpoints/*.pt
+*.pth
+*.pt
+
+# Training logs & smoke-test outputs (figures/ and results/ are kept)
+logs/
+test_run/
+
+# Report (submitted separately to E3) & course materials
+report/
+lab1_spec.pdf
+sample.py
+
+# Data / Datasets
+chest_xray/
+*.zip
+data/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
